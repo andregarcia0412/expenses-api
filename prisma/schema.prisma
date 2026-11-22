@@ -11,3 +11,34 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  expenses Expense[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(100)
+  expenses Expense[]
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  description String   @db.VarChar(512)
+  amount      Decimal  @db.Decimal(18, 2)
+  date        DateTime
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+
+  @@index([userId])
+  @@index([categoryId])
+}
