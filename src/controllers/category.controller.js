@@ -23,5 +23,5 @@ export const updateCategoryById = async (req, res) => {
 export const deleteCategoryById = async (req, res) => {
   const id = parseId(req.params.id);
   await categoryService.deleteCategoryById(id);
-  res.status(204).json(await categoryService.deleteCategoryById(id));
+  res.status(204).send();
 };

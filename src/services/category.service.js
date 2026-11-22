@@ -5,7 +5,7 @@ import { categoryResponseSchema } from "../schemas/category/category.schema.js";
 export const create = async (data) => {
   if (
     await prisma.category.findUnique({
-      where: { description: data.description },
+      where: { name: data.name },
     })
   )
     throw new ConflictError("This category already exists");
