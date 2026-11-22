@@ -19,6 +19,13 @@ export const findById = async (id) => {
 };
 
 export const updateById = async (id, data) => {
+  if (data.email) {
+    const existing = prisma.user.findUnique({ where: { email } });
+
+    if (existing && existing.id !== id)
+      throw new ConflictError("Email already in use");
+  }
+
   return userResponseSchema.parse(
     await prisma.user.update({ where: { id }, data }),
   );
