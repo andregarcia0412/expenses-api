@@ -1,3 +1,4 @@
+import * as bcrypt from "bcrypt";
 import { ConflictError } from "../errors/conflict.error.js";
 import { NotFoundError } from "../errors/not-found.error.js";
 import { prisma } from "../lib/prisma.js";
@@ -8,6 +9,7 @@ export const create = async (data) => {
     throw new ConflictError("Email already in use");
   }
 
+  data.password = await bcrypt.hash(data.password, 12);
   return userResponseSchema.parse(await prisma.user.create({ data }));
 };
 
