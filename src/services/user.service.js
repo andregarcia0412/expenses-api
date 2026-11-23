@@ -20,6 +20,10 @@ export const findById = async (id) => {
   return userResponseSchema.parse(user);
 };
 
+export const findByEmail = async (email) => {
+  return await prisma.user.findUnique({ where: { email } });
+};
+
 export const updateById = async (id, data) => {
   if (data.email) {
     const existing = prisma.user.findUnique({ where: { email } });
