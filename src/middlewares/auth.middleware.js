@@ -8,8 +8,11 @@ export const authMiddleware = (req, _res, next) => {
   if (scheme?.toLowerCase() !== "bearer" || !token)
     throw new UnauthorizedError("Missing or malformed Authorization header");
 
+  let payload;
   try {
-    const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET, {
+      algorithms: ["HS256"],
+    });
   } catch {
     throw new UnauthorizedError("Invalid or expired access token");
   }
