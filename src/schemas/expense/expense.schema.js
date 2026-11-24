@@ -14,5 +14,6 @@ export const expenseResponseSchema = z.object({
   description: z.string(),
   amount: z.number(),
   date: z.date(),
+  category: z.string(),
   createdAt: z.date(),
 });
