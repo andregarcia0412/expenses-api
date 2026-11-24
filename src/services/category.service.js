@@ -1,4 +1,5 @@
 import { ConflictError } from "../errors/conflict.error.js";
+import { NotFoundError } from "../errors/not-found.error.js";
 import { prisma } from "../lib/prisma.js";
 import { categoryResponseSchema } from "../schemas/category/category.schema.js";
 
@@ -11,6 +12,13 @@ export const create = async (data) => {
     throw new ConflictError("This category already exists");
 
   return categoryResponseSchema.parse(await prisma.category.create({ data }));
+};
+
+export const findCategoryById = async (id) => {
+  const category = await prisma.category.findUnique({ id });
+
+  if (!category) throw new NotFoundError("Category not found");
+  return category;
 };
 
 export const listCategories = async () => {
