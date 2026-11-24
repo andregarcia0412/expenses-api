@@ -15,7 +15,7 @@ export const create = async (data) => {
 };
 
 export const findCategoryById = async (id) => {
-  const category = await prisma.category.findUnique({ id });
+  const category = await prisma.category.findUnique({ where: { id } });
 
   if (!category) throw new NotFoundError("Category not found");
   return category;
