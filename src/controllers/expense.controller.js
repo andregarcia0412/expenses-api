@@ -7,14 +7,14 @@ import { parseId } from "../utils/parse-id.js";
 
 export const create = async (req, res) => {
   const data = createExpenseSchema.parse(req.body);
-  res.status(201).json(await expenseService.create(extractUserId(req), data));
+  res.status(201).json(await expenseService.create(req.userId, data));
 };
 
 export const findById = async (req, res) => {
   const expenseId = parseId(req.params.id);
   res
     .status(200)
-    .json(await expenseService.findExpenseById(expenseId, extractUserId(req)));
+    .json(await expenseService.findExpenseById(expenseId, req.userId));
 };
 
 export const listExpenses = async (req, res) => {
@@ -23,7 +23,7 @@ export const listExpenses = async (req, res) => {
     .status(200)
     .json(
       await expenseService.listUserExpenses(
-        extractUserId(req),
+        req.userId,
         categoryId ? parseId(categoryId) : undefined,
       ),
     );
@@ -34,18 +34,12 @@ export const updateExpense = async (req, res) => {
   const data = updateExpenseSchema.parse(req.body);
   res
     .status(200)
-    .json(
-      await expenseService.updateExpense(expenseId, extractUserId(req), data),
-    );
+    .json(await expenseService.updateExpense(expenseId, req.userId, data));
 };
 
 export const deleteExpense = async (req, res) => {
   const expenseId = parseId(req.params.id);
   res
     .status(204)
-    .json(await expenseService.deleteExpense(expenseId, extractUserId(req)));
-};
-
-const extractUserId = (req) => {
-  return parseId(req.userId);
+    .json(await expenseService.deleteExpense(expenseId, req.userId));
 };
