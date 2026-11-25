@@ -12,9 +12,9 @@ router.get("/", (_req, res) => {
   });
 });
 
-router.use("/user", userRouter);
-router.use("/category", categoryRouter);
+router.use("/users", userRouter);
+router.use("/categories", categoryRouter);
 router.use("/auth", authRouter);
-router.use("/expense", expenseRouter);
+router.use("/expenses", expenseRouter);
 
 export { router };
