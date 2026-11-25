@@ -38,8 +38,6 @@ export const updateExpense = async (req, res) => {
 };
 
 export const deleteExpense = async (req, res) => {
-  const expenseId = parseId(req.params.id);
-  res
-    .status(204)
-    .json(await expenseService.deleteExpense(expenseId, req.userId));
+  await expenseService.deleteExpense(parseId(req.params.id), req.userId);
+  res.status(204).send();
 };
