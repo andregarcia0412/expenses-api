@@ -1,10 +1,12 @@
 import { prisma } from "../../src/lib/prisma.js";
 import { seedCategories } from "./category.seed.js";
+import { seedExpenses } from "./expense.seed.js";
 import { seedUsers } from "./user.seed.js";
 
 const main = async () => {
   await seedCategories(prisma);
   await seedUsers(prisma);
+  await seedExpenses(prisma);
 };
 
 main()
