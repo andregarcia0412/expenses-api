@@ -7,7 +7,7 @@ export const createExpenseSchema = z.object({
   categoryId: z.number().positive(),
 });
 
-export const updateExpenseSchema = createExpenseSchema.partial();
+export const updateExpenseSchema = createExpenseSchema;
 
 export const expenseResponseSchema = z.object({
   id: z.number(),

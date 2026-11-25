@@ -9,7 +9,6 @@ export const create = async (data) => {
     throw new ConflictError("Email already in use");
   }
 
-  data.password = await bcrypt.hash(data.password, 12);
   return userResponseSchema.parse(await prisma.user.create({ data }));
 };
 
@@ -26,10 +25,16 @@ export const findByEmail = async (email) => {
 
 export const updateById = async (id, data) => {
   if (data.email) {
-    const existing = prisma.user.findUnique({ where: { email } });
+    const existing = await prisma.user.findUnique({
+      where: { email: data.email },
+    });
 
     if (existing && existing.id !== id)
       throw new ConflictError("Email already in use");
+  }
+
+  if (data.password) {
+    data.password = await bcrypt.hash(data.password, 12);
   }
 
   return userResponseSchema.parse(
@@ -38,5 +43,8 @@ export const updateById = async (id, data) => {
 };
 
 export const deleteById = async (id) => {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) throw new NotFoundError("User not found");
+
   await prisma.user.delete({ where: { id } });
 };
