@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createExpenseSchema = z.object({
   description: z.string().max(100),
   amount: z.number().nonnegative().multipleOf(0.01),
-  date: z.coerce.date(),
+  date: z.iso.date().transform((date) => new Date(date)),
   categoryId: z.number().positive(),
 });
 
