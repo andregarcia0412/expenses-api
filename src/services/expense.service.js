@@ -1,3 +1,4 @@
+import { BadRequestError } from "../errors/bad-request.error.js";
 import { NotFoundError } from "../errors/not-found.error.js";
 import { prisma } from "../lib/prisma.js";
 import { expenseResponseSchema } from "../schemas/expense/expense.schema.js";
@@ -6,7 +7,7 @@ import * as categoryService from "./category.service.js";
 const include = { category: { select: { name: true } } };
 
 export const create = async (userId, data) => {
-  await categoryService.findCategoryById(data.categoryId);
+  await ensureCategoryExists(data.categoryId);
 
   const expense = await prisma.expense.create({
     data: {
@@ -39,7 +40,7 @@ export const updateExpense = async (id, userId, data) => {
   await findUserExpense(id, userId);
 
   if (data.categoryId !== undefined)
-    await categoryService.findCategoryById(data.categoryId);
+    await ensureCategoryExists(data.categoryId);
 
   return expenseResponseSchema.parse(
     await prisma.expense.update({ where: { id, userId }, data, include }),
@@ -58,4 +59,9 @@ const findUserExpense = async (id, userId) => {
   });
   if (!expense) throw new NotFoundError("Expense not found");
   return expense;
+};
+
+const ensureCategoryExists = async (categoryId) => {
+  if (!(await categoryService.categoryExists(categoryId)))
+    throw new BadRequestError("Category not found");
 };

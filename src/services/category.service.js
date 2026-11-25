@@ -14,6 +14,13 @@ export const create = async (data) => {
   return categoryResponseSchema.parse(await prisma.category.create({ data }));
 };
 
+export const categoryExists = async (id) => {
+  return !!(await prisma.category.findUnique({
+    where: { id },
+    select: { id: true },
+  }));
+};
+
 export const findCategoryById = async (id) => {
   const category = await prisma.category.findUnique({ where: { id } });
 
