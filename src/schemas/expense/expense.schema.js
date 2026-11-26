@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const createExpenseSchema = z.object({
-  description: z.string().max(100),
-  amount: z.number().nonnegative().multipleOf(0.01),
+  description: z.string().trim().min(1).max(100),
+  amount: z.number().positive().multipleOf(0.01),
   date: z.iso.date().transform((date) => new Date(date)),
-  categoryId: z.number().positive(),
+  categoryId: z.int().positive(),
 });
 
 export const updateExpenseSchema = createExpenseSchema;
@@ -14,8 +14,6 @@ export const expenseResponseSchema = z.object({
   description: z.string(),
   amount: z.coerce.number(),
   date: z.date(),
-  category: z
-    .object({ name: z.string() })
-    .transform((category) => category.name),
+  category: z.object({ id: z.number(), name: z.string() }),
   createdAt: z.date(),
 });

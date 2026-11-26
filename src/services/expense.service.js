@@ -4,7 +4,7 @@ import { prisma } from "../lib/prisma.js";
 import { expenseResponseSchema } from "../schemas/expense/expense.schema.js";
 import * as categoryService from "./category.service.js";
 
-const include = { category: { select: { name: true } } };
+const include = { category: { select: { id: true, name: true } } };
 
 export const create = async (userId, data) => {
   await ensureCategoryExists(data.categoryId);
