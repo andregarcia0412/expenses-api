@@ -52,6 +52,8 @@ npm run dev
 
 A API fica disponível em `http://localhost:3000/api/v1`.
 
+Documentação Swagger: `http://localhost:3000/api/v1/docs` (OpenAPI em JSON: `/api/v1/docs.json`).
+
 ## Usuário de teste
 
 Email: `teste@email.com`

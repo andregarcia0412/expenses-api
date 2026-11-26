@@ -6,7 +6,9 @@ export const createCategorySchema = z.object({
 
 export const updateCategorySchema = createCategorySchema.partial();
 
-export const categoryResponseSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-});
+export const categoryResponseSchema = z
+  .object({
+    id: z.number().meta({ example: 1 }),
+    name: z.string().meta({ example: "Alimentação" }),
+  })
+  .meta({ id: "Category" });
